@@ -37,7 +37,7 @@ export const generateRefreshToken = async (adminId: string) => {
       },
     });
   } catch (error) {
-    new ErrorHandler("Error while creating new Refresh Token", 400);
+    throw new ErrorHandler("Error while creating new Refresh Token", 400);
   }
 
   return refreshToken;
@@ -58,7 +58,6 @@ export const verifyRefreshToken = async (
   try {
     const refreshToken = await prisma.refreshToken.findUnique({
       where: { token },
-      include: { admin: true },
     });
 
     if (!refreshToken || refreshToken.expiresAt < new Date()) {
@@ -108,9 +107,23 @@ export const setRefreshToken = (res: Response, refreshToken: string): void => {
 };
 
 export const clearAccessToken = (res: Response) => {
-  res.clearCookie("accessToken");
+  const isProduction = process.env.NODE_ENV === "production";
+
+  res.cookie("accessToken", "", {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
+    maxAge: 0,
+  });
 };
 
 export const clearRefreshToken = (res: Response) => {
-  res.clearCookie("refreshToken");
+  const isProduction = process.env.NODE_ENV === "production";
+
+  res.cookie("refreshToken", "", {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
+    maxAge: 0,
+  });
 };

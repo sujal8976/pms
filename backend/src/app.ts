@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import dotenv from "dotenv";
 import { errorMiddleware } from "./middlewares/error";
+import authRoute from "./routes/auth.routes";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 // routes
+app.use("/api/auth", authRoute);
 
 // health check
 app.get("/api/health", (req, res) => {
