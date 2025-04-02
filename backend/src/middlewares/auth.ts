@@ -11,7 +11,7 @@ export const authenticate = (
     const token = req.cookies.accessToken;
 
     if (!token) {
-      throw new ErrorHandler("Authentication required", 401);
+      throw new ErrorHandler("no_access_token", 401);
     }
 
     const decoded = verifyAccessToken(token);

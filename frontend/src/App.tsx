@@ -1,11 +1,16 @@
-import { Button } from "./components/ui/button";
+import Sidebar from "./components/layout/sidebar";
+import Signup from "./pages/auth/signup";
+import Provider from "./provider";
 
 function App() {
-
   return (
     <>
-      <div className="text-9xl bg-blue-700">Hello World</div>
-      <Button className="p-10">Click</Button>
+      <Provider>
+        <div className="">
+          <Sidebar />
+          <Signup />
+        </div>
+      </Provider>
     </>
   );
 }
